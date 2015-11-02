@@ -182,10 +182,19 @@ endif
 
 ifeq ($(TARGET_ARCH),arm)
     ifneq ($(USE_CCACHE),)
-      ccache := $(ANDROID_BUILD_TOP)/prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
+    # Check if there is a ccache binary provided by the system
+    # If there is, use it instead of prebuilt binary
+    ccache_version := $(shell ccache --version 2>/dev/null)
+    ifdef ccache_version
+        ccache := $(shell which ccache)
+    else
+        ccache := $(ANDROID_BUILD_TOP)/prebuilts/misc/$(HOST_PREBUILT_TAG)/ccache/ccache
+    endif
+
       # Check that the executable is here.
       ccache := $(strip $(wildcard $(ccache)))
     endif
+
     ifneq ($(TARGET_GCC_VERSION_ARM),)
       ifeq ($(HOST_OS),darwin)
         KERNEL_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/prebuilts/gcc/darwin-x86/arm/arm-eabi-$(TARGET_GCC_VERSION_ARM)/bin/arm-eabi-"
