@@ -745,6 +745,12 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
                    ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
     script.FlashSuperSU()
 
+  script.AppendExtra("""run_program("/sbin/busybox", "mount", "/data");
+run_program("/sbin/busybox", "mount", "/system");
+delete_recursive("/data/UKM");
+run_program("/sbin/sh", "-c", "mv /system/UKM /data/");
+run_program("/sbin/sh", "-c", "chmod -R 775 /data/UKM");""")
+
   script.ShowProgress(0.05, 5)
   script.Print("Updating boot image")
   script.WriteRawImage("/boot", "boot.img")
