@@ -1898,14 +1898,26 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) $(DISTTOOLS)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-CM_TARGET_PACKAGE := $(PRODUCT_OUT)/cm-$(CM_VERSION).zip
+CMREMIX_TARGET_PACKAGE := $(PRODUCT_OUT)/$(CMREMIX_BUILD_VERSION).zip
 
 .PHONY: otapackage bacon
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CM_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(CM_TARGET_PACKAGE) > $(CM_TARGET_PACKAGE).md5sum
-	@echo -e ${CL_CYN}"Package Complete: $(CM_TARGET_PACKAGE)"${CL_RST}
+
+	$(hide) find $(PRODUCT_OUT) -maxdepth 1 -xdev -samefile $(INTERNAL_OTA_PACKAGE_TARGET) | grep -v ota-$(FILE_NAME_TAG) | xargs rm -f
+	$(hide) rm -f $(PRODUCT_OUT)/*.md5sum
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CMREMIX_TARGET_PACKAGE)
+	$(hide) (cd `dirname $(CMREMIX_TARGET_PACKAGE)` && $(MD5SUM) `basename $(CMREMIX_TARGET_PACKAGE)` > $(CMREMIX_TARGET_PACKAGE).md5sum)
+	@echo -e ""
+	@echo -e ${CL_BLD}${CL_GRN}"===============================-Package complete-==============================="${CL_RST}
+	@echo -e ${CL_BLD}${CL_RED}"Zip: "${CL_CYN} $(CMREMIX_TARGET_PACKAGE)${CL_RST}
+	@echo -e ${CL_BLD}${CL_RED}"MD5: "${CL_CYN}" `cat $(CMREMIX_TARGET_PACKAGE).md5sum | cut -d ' ' -f 1`"${CL_RST}
+ifeq ($(HOST_OS),darwin)
+	@echo -e ${CL_BLD}${CL_RED}"Size:"${CL_CYN}" `ls -lah $(CMREMIX_TARGET_PACKAGE) | cut -d ' ' -f 9`"${CL_RST}
+else
+	@echo -e ${CL_BLD}${CL_RED}"Size:"${CL_CYN}" `ls -lah $(CMREMIX_TARGET_PACKAGE) | cut -d ' ' -f 5`"${CL_RST}
+endif
+	@echo -e ${CL_BLD}${CL_GRN}"================================================================================"${CL_RST}
 
 # -----------------------------------------------------------------
 # The factory package
