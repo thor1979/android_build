@@ -742,11 +742,11 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     if block_based:
       script.Unmount("/system")
 
-  if block_based:
-    script.Print("Flashing SuperSU...")
-    common.ZipWriteStr(output_zip, "supersu/supersu.zip",
-                   ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
-    script.FlashSuperSU()
+#  if block_based:
+#    script.Print("Flashing SuperSU...")
+#    common.ZipWriteStr(output_zip, "supersu/supersu.zip",
+#                   ""+input_zip.read("SYSTEM/addon.d/UPDATE-SuperSU.zip"))
+#    script.FlashSuperSU()
 
   script.AppendExtra("""run_program("/sbin/busybox", "mount", "/data");
 run_program("/sbin/busybox", "mount", "/system");
