@@ -676,6 +676,9 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
     # image.  This has the effect of writing new data from the package
     # to the entire partition, but lets us reuse the updater code that
     # writes incrementals to do it.
+    script.Print("Formatting system partition...")
+    script.FormatPartition("/system")
+    script.Print("Installing ROM...")
     script.Print("Updating system partition")
     system_tgt = GetImage("system", OPTIONS.input_tmp, OPTIONS.info_dict)
     system_tgt.ResetFileMap()
