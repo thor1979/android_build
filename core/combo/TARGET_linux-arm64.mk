@@ -122,10 +122,17 @@ TARGET_GLOBAL_LDFLAGS += -Wl,--allow-shlib-undefined
 
 TARGET_GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden
 
+# CMRemix
+include $(BUILD_SYSTEM)/cmremix.mk
+
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CFLAGS += $(CMREMIX_GCC_CFLAGS)
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_CPPFLAGS += $(CMREMIX_GCC_CPPFLAGS)
+$(combo_2nd_arch_prefix)TARGET_GLOBAL_LDFLAGS += $(CMREMIX_GCC_LDFLAGS)
+
 # More flags/options can be added here
 TARGET_RELEASE_CFLAGS := \
 			-DNDEBUG \
-			-O2 -g \
+			$(CMREMIX_GCC_CFLAGS_ARM) \
 			-Wstrict-aliasing=2 \
 			-fgcse-after-reload \
 			-frerun-cse-after-loop \

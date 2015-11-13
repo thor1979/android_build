@@ -25,8 +25,14 @@ CLANG_CONFIG_EXTRA_CONLYFLAGS := -std=gnu99
 CLANG_CONFIG_EXTRA_CPPFLAGS :=
 CLANG_CONFIG_EXTRA_LDFLAGS :=
 
+# CMRemix
+include $(BUILD_SYSTEM)/cmremix.mk
+CLANG_CONFIG_EXTRA_CFLAGS += $(CMREMIX_CLANG_CFLAGS)
+CLANG_CONFIG_EXTRA_CPPFLAGS += $(CMREMIX_CLANG_CPPFLAGS)
+CLANG_CONFIG_EXTRA_LDFLAGS += $(CMREMIX_CLANG_LDFLAGS)
+
 CLANG_CONFIG_EXTRA_CFLAGS += \
-  -D__compiler_offsetof=__builtin_offsetof
+  -w -O3 -Qunused-arguments -Wno-unknown-warning-option -D__compiler_offsetof=__builtin_offsetof
 
 # Help catch common 32/64-bit errors.
 CLANG_CONFIG_EXTRA_CFLAGS += \
@@ -58,6 +64,7 @@ CLANG_CONFIG_EXTRA_CFLAGS += \
   -fcolor-diagnostics
 
 CLANG_CONFIG_UNKNOWN_CFLAGS := \
+  $(CMREMIX_CLANG_UNKNOWN_FLAGS) \
   -finline-functions \
   -finline-limit=64 \
   -fno-canonical-system-headers \
