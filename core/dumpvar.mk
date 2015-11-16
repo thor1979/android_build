@@ -64,7 +64,7 @@ endif # CALLED_FROM_SETUP
 
 ifneq ($(PRINT_BUILD_CONFIG),)
 HOST_OS_EXTRA:=$(shell python -c "import platform; print(platform.platform())")
-$(info ============================================)
+$(info ========================================================)
 $(info   PLATFORM_VERSION_CODENAME=$(PLATFORM_VERSION_CODENAME))
 $(info   PLATFORM_VERSION=$(PLATFORM_VERSION))
 $(info   CMREMIX_VERSION=$(CMREMIX_BUILD_VERSION))
@@ -78,13 +78,6 @@ $(info   TARGET_CPU_VARIANT=$(TARGET_CPU_VARIANT))
 $(info   TARGET_2ND_ARCH=$(TARGET_2ND_ARCH))
 $(info   TARGET_2ND_ARCH_VARIANT=$(TARGET_2ND_ARCH_VARIANT))
 $(info   TARGET_2ND_CPU_VARIANT=$(TARGET_2ND_CPU_VARIANT))
-$(info   TARGET_NDK_GCC_VERSION=$(TARGET_NDK_GCC_VERSION))
-$(info   TARGET_GCC_VERSION=$(TARGET_GCC_VERSION_AND))
-ifdef TARGET_GCC_VERSION_ARM
-$(info   TARGET_KERNEL_TOOLCHAIN=$(TARGET_GCC_VERSION_ARM))
-else
-$(info   TARGET_KERNEL_TOOLCHAIN=4.8)
-endif
 $(info   HOST_ARCH=$(HOST_ARCH))
 $(info   HOST_OS=$(HOST_OS))
 $(info   HOST_OS_EXTRA=$(HOST_OS_EXTRA))
@@ -95,5 +88,15 @@ ifeq ($(CYNGN_TARGET),true)
 $(info   CYNGN_TARGET=$(CYNGN_TARGET))
 $(info   CYNGN_FEATURES=$(CYNGN_FEATURES))
 endif
-$(info ============================================)
+$(info ========================================================)
+$(info ========================================================)
+$(info   TARGET_NDK_GCC_VERSION=$(TARGET_NDK_GCC_VERSION))
+$(info   TARGET_GCC_VERSION=$(TARGET_GCC_VERSION_AND))
+ifdef TARGET_GCC_VERSION_ARM
+$(info   TARGET_KERNEL_TOOLCHAIN=$(TARGET_GCC_VERSION_ARM))
+else
+$(info   TARGET_KERNEL_TOOLCHAIN=4.8)
+endif
+$(info ========================================================)
+$(info ========================================================)
 endif

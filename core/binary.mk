@@ -30,6 +30,34 @@ else
   endif
 endif
 
+### Begin Sabermod  optimizations ###
+
+# CPU Tuning flags
+include $(BUILD_SYSTEM)/tune.mk
+include $(BUILD_SYSTEM)/extra.mk
+
+# O3 optimizations
+#ifeq ($(strip $(O3_OPTIMIZATIONS)),true)
+#  include $(BUILD_SYSTEM)/O3.mk
+#endif
+
+# Strict Aliasing optimizations
+ifeq ($(LOCAL_STRICT_ALIASING),true)
+  include $(BUILD_SYSTEM)/strict.mk
+endif
+
+# Graphite  optimizations
+# Do not use graphite on host modules or the clang compiler.
+ifneq ($(strip $(LOCAL_IS_HOST_MODULE)),true)
+  ifneq ($(strip $(LOCAL_CLANG)),true)
+
+    # If it gets this far enable graphite by default from here on out.
+    include $(BUILD_SYSTEM)/graphite.mk
+  endif
+endif
+
+### end Sabermod  optimizations ###
+
 # The following LOCAL_ variables will be modified in this file.
 # Because the same LOCAL_ variables may be used to define modules for both 1st arch and 2nd arch,
 # we can't modify them in place.
