@@ -48,6 +48,9 @@ EOF
     done | column
 }
 
+# Load ANSI color palette
+. ./vendor/cmremix/tools/colors
+
 # Get the value of a build variable as an absolute path.
 function get_abs_build_var()
 {
@@ -2388,18 +2391,29 @@ function mk_timer()
     fi
     echo
     if [ $ret -eq 0 ] ; then
-        printf "${color_success}#### make completed successfully "
+        echo -n -e "${color_success}#### ${bldgrn}make completed successfully${rst} "
     else
-        printf "${color_failed}#### make failed to build some targets "
+        echo -n -e "${color_failed}#### ${bldred}make failed to build some targets${rst} "
     fi
     if [ $hours -gt 0 ] ; then
-        printf "(%02g:%02g:%02g (hh:mm:ss))" $hours $mins $secs
+        printf "${bldcya}(%02g:%02g:%02g (hh:mm:ss))${rst}" $hours $mins $secs
     elif [ $mins -gt 0 ] ; then
-        printf "(%02g:%02g (mm:ss))" $mins $secs
+        printf "${bldcya}(%02g:%02g (mm:ss))${rst}" $mins $secs
     elif [ $secs -gt 0 ] ; then
-        printf "(%s seconds)" $secs
+        printf "${bldcya}(%s seconds)${rst}" $secs
     fi
-    printf " ####${color_reset}\n\n"
+    echo -e " ####${color_reset}"
+    echo
+    if [ $ret -eq 0 ] ; then
+        for i in "$@"; do
+            case $i in
+                bacon|bootimage|otapackage|recoveryimage|systemimage)
+                    . ./vendor/cmremix/tools/res/cmremix
+                    ;;
+                *)
+            esac
+        done
+    fi
     return $ret
 }
 
