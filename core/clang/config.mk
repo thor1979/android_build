@@ -164,3 +164,8 @@ ifeq ($(HOST_PREFER_32_BIT),true)
 # We don't have 32-bit prebuilt libLLVM/libclang, so force to build them from source.
 FORCE_BUILD_LLVM_COMPONENTS := true
 endif
+
+# Use Snapdragon LLVM Compiler for Android
+ifeq ($(USE_CLANG_QCOM),true)
+include $(BUILD_SYSTEM)/clang/TARGET_arm_qcom.mk
+endif
